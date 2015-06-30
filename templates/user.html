@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">主页</a></li>
+  <li role="presentation"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation" class="active"><a href="/user" id="username"></a></li>
+</ul>
+
+<p>user.html</p>
+<form class="form-signin" role="form" action="/logout" method="GET">
+  {% raw xsrf_form_html() %}
+  <button class="btn btn-lg btn-primary btn-block" type="submit">注销登陆</button>
+</form>
+
+
+{% end %}

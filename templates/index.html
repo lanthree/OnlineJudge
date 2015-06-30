@@ -1,0 +1,85 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="/">主页</a></li>
+  <li role="presentation"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation"><a href="/user" id="username"></a></li>
+</ul>
+
+
+<!-- The OJ -->
+<div class="panel panel-default">
+  <div class="panel-heading">The OJ</div>
+  <div class="panel-body">
+    <p>bulabulabulabulabula</p>
+  </div>
+</div>
+
+
+<!-- OJ 返回结果 -->
+<div class="panel panel-default">
+  <div class="panel-heading">OJ 返回结果</div>
+  <div class="panel-body">
+    <p>对 OJ 系统的判题返回结果的说明。</p>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+      <div class="row">
+        <div class="col-md-4"><strong>AC -- Accepted</strong></div>
+        <div class="col-md-8">你的程序完全正确，通过了 OJ 系统的测试</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-info">
+      <div class="row">
+        <div class="col-md-4"><strong>Queuing & Compiling & Running</strong></div>
+        <div class="col-md-8">正在排队判题、正在编译、正在判题</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-info">
+      <div class="row">
+        <div class="col-md-4"><strong>PE -- Presentation Error</strong></div>
+        <div class="col-md-8">你的程序的运行输出格式跟题目描述的并不严格一致，请仔细审题</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-warning">
+      <div class="row">
+        <div class="col-md-4"><strong>RE -- Runtime Error</strong></div>
+        <div class="col-md-8">你的程序在运行的时候发生崩溃。有可能是 数组越界、浮点除零、栈溢出等问题</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-warning">
+      <div class="row">
+        <div class="col-md-4"><strong>TLE -- Time Limit Exceeded</strong></div>
+        <div class="col-md-8">你的程序在题目所限时间内没有给出所有答案</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-warning">
+      <div class="row">
+        <div class="col-md-4"><strong>MLE -- Memory Limit Exceeded</strong></div>
+        <div class="col-md-8">你的程序在运行的时候尝试使用的内存超出了题目所限</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-danger">
+      <div class="row">
+        <div class="col-md-4"><strong>CE -- Compilation Error</strong></div>
+        <div class="col-md-8">你的程序在 OJ 系统中没有编译成功，请检查语法</div>
+      </div>
+    </li>
+    <li class="list-group-item list-group-item-danger">
+      <div class="row">
+        <div class="col-md-4"><strong>WA -- Wrong Answer</strong></div>
+        <div class="col-md-8">你的程序的运行结果跟标准结果不完全一样</div>
+      </div>
+    </li>
+  </ul>
+</div>
+        <!-- /OJ 返回结果 -->
+
+{% end %}

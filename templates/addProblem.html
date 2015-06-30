@@ -1,0 +1,105 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">主页</a></li>
+  <li role="presentation" class="active"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation"><a href="/user" id="username"></a></li>
+</ul>
+
+
+<div class="panel 
+  {% if addOK %}
+      panel-default
+  {% else %}
+      panel-primary
+  {% end %}
+">
+  <div class="panel-heading">
+    {% if addOK %}
+      Add Problem
+    {% else %}
+      Titl Used || Not All Filled
+    {% end %}
+  </div>
+  <div class="panel-body">
+
+<form action="/addProblem" enctype="multipart/form-data" method="POST">
+{% raw xsrf_form_html() %}
+<div class="form-group">
+  
+    <label for="timeLimit" class="control-label">Time Limit</label>
+    <select name="timeLimit" style="width:100px;">
+      <option value="1">1000MS</option>
+      <option value="2">2000MS</option>
+      <option value="3">3000MS</option>
+      <option value="4">4000MS</option>
+      <option value="5">5000MS</option>
+      <option value="6">6000MS</option>
+    </select>
+
+    <label for="stars" class="control-label">Stars</label>
+    <select name="stars" style="width:100px;">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+
+    <h4>Title</h4>
+    <textarea class="form-control" rows="1" name="title" spellcheck="false" required></textarea>
+
+
+    
+
+    <h4>Problem Description</h4>
+    <textarea class="form-control" rows="3" name="proDes" spellcheck="false" required></textarea>
+
+
+    <h4>Input</h4>
+    <textarea rows="3" class="form-control" name="inputDes" spellcheck="false" required></textarea>
+
+    <h4>Output</h4>
+    <textarea rows="3" class="form-control" name="outputDes" spellcheck="false" required></textarea>
+
+    <h4>Sample Input</h4>
+    <textarea rows="3" class="form-control" name="sapInput" spellcheck="false" required></textarea>
+
+    <h4>Sample Output</h4>
+    <textarea rows="3" class="form-control" name="sapOutput" spellcheck="false" required></textarea>
+
+    <h4>Author</h4>
+    <textarea rows="3" class="form-control" name="author" spellcheck="false" required></textarea>
+
+    <h4>Recommend</h4>
+    <textarea rows="3" class="form-control" name="recommend" spellcheck="false"></textarea>
+
+    <h4>Test Input</h4>
+    <!--textarea rows="3" class="form-control" name="input" spellcheck="false" required></textarea-->
+    <input type="file" name="inputfile"/>
+
+    <h4>Test Output</h4>
+    <input type="file" name="outputfile"/>
+    <!--textarea rows="3" class="form-control" name="output" spellcheck="false" required></textarea-->
+</div>
+
+<div class="form-group">
+<div class="col-sm-offset-5 col-sm-2">
+<button type="submit" class="btn btn-primary btn-block">Submit</button>
+</div>
+</div>
+
+</form>
+    
+
+  </div>
+</div>
+{% end %}

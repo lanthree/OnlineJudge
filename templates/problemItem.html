@@ -1,0 +1,94 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">主页</a></li>
+  <li role="presentation" class="active"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation"><a href="/user" id="username">{{user}}</a></li>
+</ul>
+
+
+{% autoescape None %}
+<div class="panel panel-primary">
+  <div class="panel-heading">Problem ID {{ item["id"] }}</div>
+  <div class="panel-body">
+
+    <h1 align="center">{{ item["title"] }}</h1>
+    <p align="center">
+      Accepts:0
+      Submissions:0
+    </p>
+    <p align="center">
+      Time Limit:{{item["timeLimit"]*2}}/{{item["timeLimit"]}}MS(Java/Others)
+      Memory Limit:65536K
+    </p>
+
+    <h4>Problem Description</h4>
+    <div class="well well-sm">
+      {{ item["proDes"] }}
+    </div>
+
+    <h4>Input</h4>
+    <div class="well well-sm">
+      {{ item["inputDes"] }}
+    </div>
+
+    <h4>Output</h4>
+    <div class="well well-sm">
+      {{ item["outputDes"] }}
+    </div>
+
+    <h4>Sample Input</h4>
+    <div class="well well-sm">
+      {{ item["sapInput"] }}
+    </div>
+
+
+
+    <h4>Sample Output</h4>
+    <div class="well well-sm">
+      {{ item["sapOutput"] }}
+    </div>
+
+    {% if item["recommend"] != "" %}
+    <h4>Recommend</h4>
+    <div class="well well-sm">
+      {{ item["recommend"] }}
+    </div>
+    {% end %}
+
+    <h4>Author</h4>
+    <div class="well well-sm">
+      {{ item["author"] }}
+    </div>
+
+    <p align="center"><a href="/submitPage/{{item["id"]}}"><strong>Submit</strong></a></p>
+
+  </div>
+  <div class="panel-footer">
+    <div class="row">
+
+      <a class="lefta col-md-6" href="/problem/{{item["id"]-1}}" align="left">
+        {% if preOK %}
+        Previous
+        {% end %}
+      </a>
+      
+      <a class="righta col-md-6" href="/problem/{{item["id"]+1}}" align="right">
+        {% if nextOK %}
+        Next
+        {% end %}
+      </a>
+      
+    </div>
+  </div>
+</div>
+
+
+{% end %}

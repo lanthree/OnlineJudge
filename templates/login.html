@@ -1,0 +1,63 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">主页</a></li>
+  <li role="presentation"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation" class="active"><a href="/user" id="username"></a></li>
+</ul>
+
+
+
+<div class="panel-form">
+<div class="panel 
+  {% if loginOK %}
+      panel-default
+  {% else %}
+      panel-primary
+  {% end %}
+">
+  <div class="panel-heading">
+    {% if loginOK %}
+      Login
+    {% else %}
+      Wrong Username || Password
+    {% end %}
+  </div>
+  <div class="panel-body">
+    <form class="form-signin" role="form" action="/login" method="POST">
+      {% raw xsrf_form_html() %}
+      <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+      <input type="password" name="password" class="form-control" placeholder="Password" required>
+      <div class="row">
+        <div class="col-xs-6"><button class="btn btn-primary btn-block" type="submit">登陆</button></div>
+        <div class="col-xs-6"><button class="btn btn-primary btn-block" formaction="/regist" formmethod="GET" type="submit">注册</button></div>
+      </div>
+      
+    </form>
+  </div>
+</div>
+</div>
+
+
+<style type="text/css">
+.form-signin{
+  padding: 15px;
+  margin: 0 auto;
+}
+.panel-form{
+  width: 400px;
+  margin: 100px auto;
+}
+input{
+  margin-bottom: 15px
+}
+</style>
+
+{% end %}

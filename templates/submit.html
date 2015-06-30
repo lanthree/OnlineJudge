@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<div class="page-header">
+  <h1>AC-Fighter</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">主页</a></li>
+  <li role="presentation" class="active"><a href="/problem">题库</a></li>
+  <li role="presentation"><a href="/status">状态</a></li>
+  <li role="presentation"><a href="/user" id="username">{{user}}</a></li>
+</ul>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">Problem ID {{proID}}</div>
+  <div class="panel-body">
+
+
+
+<form align="center" action="/submit/{{proID}}" method="POST">
+{% raw xsrf_form_html() %}
+
+<div class="form-group">
+<label for="language" class="control-label">Language</label>
+<select name="language" style="width:100px;">
+  <option>C/C++</option>
+  <option>Java</option>
+  <option>Python</option>
+</select>
+</div>
+
+<div class="form-group">
+<textarea cols="80" rows="20" name="source" spellcheck="false"></textarea>
+</div>
+
+<div class="form-group">
+<div class="col-sm-offset-5 col-sm-2">
+<button type="submit" class="btn btn-primary btn-block">Submit</button>
+</div>
+</div>
+
+</form>
+
+
+  </div>
+  </div>
+</div>
+
+
+
+{% end %}
