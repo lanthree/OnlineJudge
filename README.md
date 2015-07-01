@@ -7,20 +7,20 @@
 ## 目录结构
 
 ```
-codeview 	// 用户提交的代码，供CodeView使用
-judge		// 判题代码
-judgefile	// 题目的输入 正确输出
-	1001	// 每个题号一个文件夹
+codeview 			// 用户提交的代码，供CodeView使用
+judge				// 判题代码
+judgefile			// 题目的输入 正确输出
+	1001			// 每个题号一个文件夹
 	1002
 	...
-outputFiles // 用户提交程序运行的输出
+outputFiles 		// 用户提交程序运行的输出
 	(runID).out
-static		// Bootstrap的东西
+static				// Bootstrap的东西
 	css, fonts, js ...
-templates	// html模板
+templates			// html模板
 	*.html
-tools		// 一些开发时测试用的代码
-usercode	// 分用户存储提交的代码
+tools				// 一些开发时测试用的代码
+usercode			// 分用户存储提交的代码
 	(username1)
 		(hiscodefiles)
 ```
