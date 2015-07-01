@@ -15,7 +15,7 @@
 int main(int argc, char ** argv)
 {
 	if(argc != 5){
-		printf("argv error\n");
+		printf("ERROR\n");
 		return 0;
 	}
 
@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 
 	pid_t pid;
 	if( (pid = fork()) < 0 ){
-		printf("ERROR: fork error\n");
+		printf("ERROR\n");
 		return 0;
 	}else if(pid == 0){
 		freopen(argv[2], "r", stdin);
@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
 
 	int status;
 	if( (pid = waitpid(pid, &status, 0)) < 0 ){
-		printf("ERROR: waitpid error\n");
+		printf("ERROR\n");
 		return 0;
 	}
 

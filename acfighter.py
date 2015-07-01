@@ -16,7 +16,7 @@ import tornado.websocket
 
 from pymongo import MongoClient
 from tornado.options import define, options
-define("port", default=80, help="run on the given port", type=int)
+define("port", default=8000, help="run on the given port", type=int)
 
 class IndexHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -169,8 +169,16 @@ class ProblemSet(object):
 						  					sapInput, sapOutput, author,\
 						  					recommend, timeLimit)
 
-	def addProblemRatio(self, AC, Submit):
-		pass
+	def addProblemRatio(self, proID, result):
+		index = int(proID) - 1001
+		if result == "AC":
+			self.proList[index]["accepted"] += 1
+			self.proList[index]["submissions"] += 1
+			self.coll_problemRatio.update_one({"id":int(proID)}, {'$inc': {"accepted":1}})
+			self.coll_problemRatio.update_one({"id":int(proID)}, {'$inc': {"submissions":1}})
+		else:
+			self.proList[index]["submissions"] += 1
+			self.coll_problemRatio.update_one({"id":int(proID)}, {'$inc': {"submissions":1}})
 
 class StatusSet(object):
 	def __init__(self):
@@ -388,11 +396,16 @@ class SubmitHandler(tornado.web.RequestHandler):
 		sourcefile = self.get_argument("source")
 		filSubmit.write(sourcefile)
 		filSubmit.close()
+		codefile = open("./codeview/%s.cpp" % runID, "w")
+		codefile.write(sourcefile)
+		codefile.close()
 
 		self.application.statusSet.addStatus(runID, proID, "Queuing", "--", "--",\
 									 len(sourcefile), "C++", username)
 
 		self.redirect("/status")
+
+		commands.getstatusoutput("chmod -R 777 %s" % dirName)
 
 		# Compile and Judge CE
 		command = "g++ %s.cpp -o %s" % (filName, filName)
@@ -408,7 +421,9 @@ class SubmitHandler(tornado.web.RequestHandler):
 
 		print runID, "Compile Over"
 		if status != 0:
+			print output
 			self.application.statusSet.setResult(runID, {"result":"CE"})
+			self.application.problemSet.addProblemRatio(proID, "CE")
 			return
 
 		# Judge -- prepare
@@ -438,34 +453,70 @@ class SubmitHandler(tornado.web.RequestHandler):
 		if output[0] == "TLE":
 			self.application.statusSet.setResult(runID, \
 				{"result": "TLE", "time": int(output[1])/1000, "memory": int(output[2])/1000})
+			self.application.problemSet.addProblemRatio(proID, "TLE")
 			return
 		elif output[0] == "MLE":
 			self.application.statusSet.setResult(runID, \
 				{"result": "MLE", "time": int(output[1])/1000, "memory": int(output[2])/1000})
+			self.application.problemSet.addProblemRatio(proID, "MLE")
 			return
 		elif output[0] == "End":
 			(statusd, outputd) = commands.getstatusoutput("diff %s %s" % (judgeFileout, outputFile))
 			if outputd == "":
 				self.application.statusSet.setResult(runID, \
 					{"result": "AC", "time": int(output[1])/1000, "memory": int(output[2])/1000})
+				self.application.problemSet.addProblemRatio(proID, "AC")
 			else:
 				(statusd, outputd) = commands.getstatusoutput("diff -i -b -B %s %s" % (judgeFileout, outputFile))
 				if outputd == "":
 					self.application.statusSet.setResult(runID, \
 					{"result": "PE", "time": int(output[1])/1000, "memory": int(output[2])/1000})
+					self.application.problemSet.addProblemRatio(proID, "PE")
 				else:
 					self.application.statusSet.setResult(runID, \
 					{"result": "WA", "time": int(output[1])/1000, "memory": int(output[2])/1000})
-
+					self.application.problemSet.addProblemRatio(proID, "WA")
 			return
-		else:
+		elif output[0] == "ERROR":
 			self.application.statusSet.setResult(runID, \
 				{"result": "System Error"})
+			self.application.problemSet.addProblemRatio(proID, "ERROR")
+		else:
+			self.application.statusSet.setResult(runID, \
+				{"result": "RE", "time": int(output[1])/1000, "memory": int(output[2])/1000})
+			self.application.problemSet.addProblemRatio(proID, "RE")
+
 
 	def get_current_user(self):
 		return self.get_secure_cookie("username")
 
 # ----- About Submit and Judge end ----- #
+
+# ----- About CodeView ----- #
+
+class CodeViewHandler(tornado.web.RequestHandler):
+	def get(self, codeID):
+		print codeID
+
+		runID = int(codeID)
+		index = len( self.application.statusSet.getStatusSet() ) - runID
+		item = self.application.statusSet.getStatusSet()[index]
+		sourcefile = open("./codeview/%s.cpp" % codeID)
+		sourcecode = sourcefile.read()
+		sourcefile.close()
+
+		print item
+		sourcecode = sourcecode.replace("<", "&lt")
+		sourcecode = sourcecode.replace(">", "&gt")
+
+
+		usr = self.get_secure_cookie("username")
+		if usr == None:
+			usr = "登陆"
+
+		self.render('codeview.html', item=item, sourcecode=sourcecode, usr=usr)
+
+# ----- About CodeView end ----- #
 
 class Application(tornado.web.Application):
 	def __init__(self):
@@ -481,6 +532,7 @@ class Application(tornado.web.Application):
 					(r'/submitPage/(\w+)', SubmitPageHandler),
 					(r'/submit/(\w+)', SubmitHandler),
 					(r'/status', StatusHandler),
+					(r'/codeview/(\w+)', CodeViewHandler),
 					(r'.*', IndexHandler)]
 
 		settings = dict(

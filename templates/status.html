@@ -31,7 +31,7 @@
 
 		{% for item in status %}
 		<tr>
-			<th scope="row">{{ item["runID"] }}</th>
+			<th scope="row"><a href="/codeview/{{item["runID"]}}">{{ item["runID"] }}</a></th>
 			<th><a href="/problem/{{item["id"]}}">{{ item["id"] }}</a></th>
 			<th>{{ item["result"] }}</th>
 			<th>{{ item["time"] }}MS</th>
