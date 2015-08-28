@@ -25,11 +25,11 @@ for item in items:
 	title 		= item.getElementsByTagName("title")[0].childNodes[0].nodeValue
 	timeLimit	= (int)(item.getElementsByTagName("time_limit")[0].childNodes[0].nodeValue)*1000
 	stars	= 2
-	proDes	= item.getElementsByTagName("description")[0].childNodes[0].nodeValue
-	inputDes	= item.getElementsByTagName("input")[0].childNodes[0].nodeValue
-	outputDes	= item.getElementsByTagName("output")[0].childNodes[0].nodeValue
-	sapInput	= item.getElementsByTagName("sample_input")[0].childNodes[0].nodeValue
-	sapOutput	= item.getElementsByTagName("sample_output")[0].childNodes[0].nodeValue
+	proDes	= item.getElementsByTagName("description")[0].childNodes[0].nodeValue.replace("\r", "<br/>")
+	inputDes	= item.getElementsByTagName("input")[0].childNodes[0].nodeValue.replace("\r", "<br/>")
+	outputDes	= item.getElementsByTagName("output")[0].childNodes[0].nodeValue.replace("\r", "<br/>")
+	sapInput	= item.getElementsByTagName("sample_input")[0].childNodes[0].nodeValue.replace("\r", "<br/>")
+	sapOutput	= item.getElementsByTagName("sample_output")[0].childNodes[0].nodeValue.replace("\r", "<br/>")
 
 	testInput = ""
 	test_inputs = item.getElementsByTagName("test_input")

@@ -113,13 +113,13 @@ class ProblemItem(object):
 		self.kv["submissions"] = submissions
 
 	def setPro(self, proDes, inputDes, outputDes, sapInput, sapOutput, author, recommend, timeLimit):
-		self.kv["proDes"] = proDes.replace("\r\n", "<br/>")
-		self.kv["inputDes"] = inputDes.replace("\r\n", "<br/>")
-		self.kv["outputDes"] = outputDes.replace("\r\n", "<br/>")
-		self.kv["sapInput"] = sapInput.replace("\r\n", " <br/> ")
-		self.kv["sapOutput"] = sapOutput.replace("\r\n", "<br/>")
-		self.kv["author"] = author.replace("\r\n", "<br/>")
-		self.kv["recommend"] = recommend.replace("\r\n", "<br/>")
+		self.kv["proDes"] = proDes.replace("\r\n", "<br/>").replace("\n", "<br/>")
+		self.kv["inputDes"] = inputDes.replace("\r\n", "<br/>").replace("\n", "<br/>")
+		self.kv["outputDes"] = outputDes.replace("\r\n", "<br/>").replace("\n", "<br/>")
+		self.kv["sapInput"] = sapInput.replace("\r\n", " <br/> ").replace("\n", "<br/>")
+		self.kv["sapOutput"] = sapOutput.replace("\r\n", "<br/>").replace("\n", "<br/>")
+		self.kv["author"] = author.replace("\r\n", "<br/>").replace("\n", "<br/>")
+		self.kv["recommend"] = recommend.replace("\r\n", "<br/>").replace("\n", "<br/>")
 		self.kv["timeLimit"] = timeLimit
 
 class ProblemSet(object):
@@ -309,8 +309,8 @@ class AddProbleItemHandler(tornado.web.RequestHandler):
 		sapOutput	= self.get_argument("sapOutput", "")
 		author		= self.get_argument("author", "")
 		recommend	= misaka.html( self.get_argument("recommend", "") )
-		testInput	= self.request.files["inputfile"][0]["body"]
-		testOutput	= self.request.files["outputfile"][0]["body"]
+		testInput	= self.request.files["inputfile"][0]["body"].replace("\r\n", "\n")
+		testOutput	= self.request.files["outputfile"][0]["body"].request("\r\n", "\n")
 
 		print testInput
 
@@ -471,7 +471,7 @@ class SubmitHandler(tornado.web.RequestHandler):
 					{"result": "AC", "time": int(output[1])/1000, "memory": int(output[2])/1000})
 				self.application.problemSet.addProblemRatio(proID, "AC")
 			else:
-				(statusd, outputd) = commands.getstatusoutput("diff -i -b -B %s %s" % (judgeFileout, outputFile))
+				(statusd, outputd) = commands.getstatusoutput("diff -i %s %s" % (judgeFileout, outputFile))
 				if outputd == "":
 					self.application.statusSet.setResult(runID, \
 					{"result": "PE", "time": int(output[1])/1000, "memory": int(output[2])/1000})
