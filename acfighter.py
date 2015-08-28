@@ -1,10 +1,11 @@
-# coding=gbk
+# coding=utf-8
 import os
 import pymongo
 import misaka
 import commands
 import urllib
 import json
+import sys
 
 import tornado.gen
 import tornado.httpserver
@@ -16,7 +17,10 @@ import tornado.websocket
 
 from pymongo import MongoClient
 from tornado.options import define, options
-define("port", default=8000, help="run on the given port", type=int)
+define("port", default=80, help="run on the given port", type=int)
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class IndexHandler(tornado.web.RequestHandler):
 	def get(self):

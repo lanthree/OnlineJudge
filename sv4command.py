@@ -16,6 +16,8 @@ class CommandHandler(tornado.web.RequestHandler):
 		print command
 
 		(status, output) = commands.getstatusoutput(command)
+		print "11111111  ", status
+		print "22222222  ", output
 		self.write({"status":status, "output":output})
 
 class Application(tornado.web.Application):

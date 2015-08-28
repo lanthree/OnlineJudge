@@ -1,4 +1,3 @@
-import pymongo
 from pymongo import MongoClient
 
 client = MongoClient('localhost', 27017)
@@ -14,14 +13,14 @@ prostatus = db["ProblemStatus"]
 print proshort.count(), prolong.count(), proratio.count(), prostatus.count()
 
 
-#for i in range(1001, 1000+proshort.count()+1):
-#	print proshort.find_one_and_delete({"id":i})
+for i in range(1001, 1000+proshort.count()+1):
+	print proshort.find_one_and_delete({"id":i})
 
-#for i in range(1001, 1000+prolong.count()+1):
-#	print prolong.find_one_and_delete({"id":i})
+for i in range(1001, 1000+prolong.count()+1):
+	print prolong.find_one_and_delete({"id":i})
 
-#for i in range(1001, 1000+proratio.count()+1):
-#	print proratio.find_one_and_delete({"id":i})
+for i in range(1001, 1000+proratio.count()+1):
+	print proratio.find_one_and_delete({"id":i})
 
 for i in range(1, prostatus.count()+1):
 	print prostatus.find_one_and_delete({"runID":i})
