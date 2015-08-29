@@ -19,15 +19,13 @@
 
 
 
-<form align="center" action="/submit/{{proID}}" method="POST">
+<form align="center" action="/submit/{{proID}}" method="POST" name="subform" onsubmit="return check()">
 {% raw xsrf_form_html() %}
 
 <div class="form-group">
 <label for="language" class="control-label">Language</label>
 <select name="language" style="width:100px;">
   <option>C/C++</option>
-  <option>Java</option>
-  <option>Python</option>
 </select>
 </div>
 
@@ -49,5 +47,17 @@
 </div>
 
 
+<script language="javascript">
+function check()
+{
+	var strlen=document.subform.source.value.length;
+	if(strlen > 20460)
+	{
+		alert("source code too lang!");
+		return false;
+	}
+	return true;
+}
+</script>
 
 {% end %}

@@ -414,10 +414,36 @@ class SubmitHandler(tornado.web.RequestHandler):
 		# Compile and Judge CE
 		command = "g++ %s.cpp -o %s" % (filName, filName)
 		#(status, output) = commands.getstatusoutput(command)
+		
+		kidsDic = {}
+		kidsDic["system"] = "system() illegal"
+		kidsDic["/dev/random"] = "/dev/random illegal"
+		kidsDic["fork"]	= "fork() illegal"
+		kidsDic["/dev/tty"] = "/dev/tty illegal"
+		kidsDic["FILE"] = "FILE illegal"
+		kidsDic["fstream"] = "fstream illegal"
+		kidsDic["fcntl"] = "fcntl illegal"	
+		kidsDic["sys/ioctl.h"] = "sys/ioctl.h illegal"
+		kidsDic["sys/socket.h"] = "sys/socke.h illegal"
+		kidsDic["sys/ipc.h"] = "sys/ipc.h illegal"
+		kidsDic["sys/shm.h"] = "sys/shm.h illegal"
+		kidsDic["pthread"] = "pthread illegal"
+		kidsDic["fopen"] = "fopen illegal"
+		kidsDic["freopen"] = "freopen illegal"
+		kidsDic["open"] = "open illegal"
+		kidsDic["unistd.h"] = "unistd.h illegal"
+		kidsDic["sleep"] = "sleep illegal"		
+		
+		for key in kidsDic.keys():
+			if sourcefile.find( key ) != -1:
+				self.application.statusSet.setResult(runID, {"result":kidsDic.get(key, "CE")})
+				self.application.problemSet.addProblemRatio(proID, kidsDic.get(key, "CE"))
+				return		
 
+		
 		client = tornado.httpclient.AsyncHTTPClient()
 		response = yield tornado.gen.Task(client.fetch, 
-						"http://localhost:8001/?" + urllib.urlencode({"command":command}))
+					"http://localhost:8001/?" + urllib.urlencode({"command":command}))
 		body = json.loads(response.body)
 		
 		status = body["status"]
